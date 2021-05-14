@@ -36,6 +36,9 @@ def get_my_vscode_bindings():
     return keys
 
 # TODO add special chars as unused pairs in most_common? sure . and ; are used somewhat but still they should be added
+
+# TODO this is all based on all available english words. But not on how common each word is.
+#      It should make sense to parse some free books and some source code instead.
 if __name__ == '__main__':
     words = load_words()
 
@@ -99,3 +102,16 @@ if __name__ == '__main__':
 
     for pair, count in most_common:
         print(f"{as_shortcut(pair):<10}, original={pair}, used={count}")
+
+# Why?
+# Now I found that alt+f is not used. It matches perfectly to a jump-to-char command due to its similarity to ctrl+f.
+# It says its used 191 times though, it would be fun to see in which words 'kf are used and if any of them are common.
+
+for word in load_words():
+    if 'kf' in word:
+        print(word)
+# many "double-words" like: backfired, thankfully, backflash, clockface, riskful and breakfast
+# and then a name i might use sometime: stockfish.
+# all in all it looks promising! If I have a 0.5% chance to misstype and do the command while i wanted to type
+# now at least I know that the words are few and not that common!
+# And indeed searching for 'kf' in this document only gives me results from these words and the direct references here!

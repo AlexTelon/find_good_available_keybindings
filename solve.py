@@ -1,5 +1,4 @@
 from collections import Counter
-import random
 import re
 
 def load_words():
@@ -36,11 +35,9 @@ def get_my_vscode_bindings():
 
     return keys
 
+# TODO add special chars as unused pairs in most_common? sure . and ; are used somewhat but still they should be added
 if __name__ == '__main__':
     words = load_words()
-
-    # for testing, lets sample to speed things up.
-    # words = random.sample(words, 2000)
 
     c_pairs = [c for word in words for c in char_pairs(word)]
     counter = Counter(c_pairs)
@@ -59,29 +56,15 @@ if __name__ == '__main__':
 
     # Remove last letter pairs.
     most_common = [(pair,count) for pair, count in most_common if pair[1] != '']
-    print(len(most_common))
-    print(most_common[:2])
-    print(most_common[-2:])
-    print()
 
     # Only care if first is in home row.
     most_common = [(pair,count) for pair, count in most_common if pair[0] in home_row]
-    print(len(most_common))
-    print(most_common[:2])
-    print(most_common[-2:])
-    print()
 
-    # left - right side combo. So if first is on left, then second must be on right
+    # Both sides of the keyboard should be used. To avoid some akward combinations.
+    # Though its possible for a command like lj to be usable it feels safer with a two hand combination.
     is_left = lambda c: c in left_side_letters
-    #is_right = lambda c: c in right_side_letters
     both_sides = lambda pair: is_left(pair[0]) != is_left(pair[1])
-
     most_common = [(pair,count) for pair, count in most_common if both_sides(pair)]
-    print(len(most_common))
-    print(most_common[:2])
-    print(most_common[-2:])
-
-    # TODO add special chars as unused pairs in most_common? sure . and ; are used somewhat but still they should be added
 
     # We still have plenty of options here. Lets narrow down to only use letters on the
     # easiest to reach rows. Those where SDF and JKL reside.
@@ -90,12 +73,16 @@ if __name__ == '__main__':
     is_easy = lambda c: c in easy_to_reach
     # Note that the first letter is on the homerow already so wont check that.
     most_common = [(pair,count) for pair, count in most_common if is_easy(pair[1])]
-    print(len(most_common))
-    print(most_common[:2])
-    print(most_common[-2:])
-    print()
 
     def as_shortcut(pair):
+        """Transforms a tuple of ('f', 'b') into ctrl+b.
+
+        Again this is all based on my personal current ergodox config where
+        certain letters have a dual purpose. If I hold 'f' for instance it acts
+        like a ctrl. Hence this transformation.
+
+        The transformation format is important since its used to match a vscode export.
+        """
         translate_table = {
             's': 'shift',
             'l': 'shift',
@@ -108,13 +95,7 @@ if __name__ == '__main__':
 
     already_used = get_my_vscode_bindings()
 
-    is_taken = lambda pair: as_shortcut(pair) in already_used
-    most_common = [(pair,count) for pair, count in most_common if not is_taken(pair)]
-    print(len(most_common))
-    print(most_common[:2])
-    print(most_common[-2:])
-    print()
+    most_common = [(pair,count) for pair, count in most_common if as_shortcut(pair) not in already_used]
 
-    print("Top 10 options:")
-    for pair, count in most_common[-10:]:
+    for pair, count in most_common:
         print(f"{as_shortcut(pair):<10}, original={pair}, used={count}")

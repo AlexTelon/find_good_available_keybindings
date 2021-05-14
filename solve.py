@@ -1,5 +1,6 @@
 from collections import Counter
 import random
+import re
 
 def load_words():
     # Example from the submodule
@@ -18,11 +19,28 @@ def char_pairs(word):
     """
     return zip(word, list(word[1:]) + [''])
 
+def get_my_vscode_bindings():
+    keys = set()
+    with open('my_current_vscode_keybindings.json') as f:
+        # the default vscode output is json does not only have comments
+        # but seem to allow for other stuff that makings it nonstandard json.
+        # So lets just find the keys in a manual way intead.
+        lines = [line for line in f.readlines() if not line.startswith('//')]
+        pattern = r'key": "(.*?)"'
+        prog = re.compile(pattern)
+
+        for line in lines:
+            result = prog.search(line)
+            if result:
+                keys.add(result.group(1))
+
+    return keys
+
 if __name__ == '__main__':
     words = load_words()
 
     # for testing, lets sample to speed things up.
-    words = random.sample(words, 2000)
+    # words = random.sample(words, 2000)
 
     c_pairs = [c for word in words for c in char_pairs(word)]
     counter = Counter(c_pairs)
@@ -79,19 +97,24 @@ if __name__ == '__main__':
 
     def as_shortcut(pair):
         translate_table = {
-            's': 'Shift',
-            'l': 'Shift',
-            'd': 'Alt',
-            'k': 'Alt',
-            'f': 'Ctrl',
-            'j': 'Ctrl',
+            's': 'shift',
+            'l': 'shift',
+            'd': 'alt',
+            'k': 'alt',
+            'f': 'ctrl',
+            'j': 'ctrl',
         }
-        return f"{translate_table[pair[0]]} + {pair[1].upper()}"
+        return f"{translate_table[pair[0]]}+{pair[1]}"
 
+    already_used = get_my_vscode_bindings()
+
+    is_taken = lambda pair: as_shortcut(pair) in already_used
+    most_common = [(pair,count) for pair, count in most_common if not is_taken(pair)]
+    print(len(most_common))
+    print(most_common[:2])
+    print(most_common[-2:])
+    print()
+
+    print("Top 10 options:")
     for pair, count in most_common[-10:]:
-        print(as_shortcut(pair))
-
-    # both_in_homerow = lambda pair: pair[0] in home_row and pair[1] in home_row
-    # End goal.
-    # home_row_side + letter on other side that is easy to reach
-    # Then manually choose what feels good and is not already taken.
+        print(f"{as_shortcut(pair):<10}, original={pair}, used={count}")

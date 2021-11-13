@@ -1,14 +1,14 @@
-The idea is to find keyboard combinations that are unusuall in english.
+The idea is to find keyboard combinations that are unusual in english.
 
-My goal is to then narrow down which one on the home row are least likely so that i can assign keyboard shortcuts on my custom ergodox layout based on this.
+My goal is to then narrow down which one on the home row are least likely so that I can assign keyboard shortcuts on my custom ergodox layout based on this.
 
-If i hold down:
+If I hold down:
 
     F or J -> Ctrl
     D or J -> Alt
     S or L -> Shift
 
-While if i just tap the key the normal letter appears.
+While if I just tap the key the normal letter appears.
 
 And while I do have the timing down mostly I want to avoid having keyboard combinations (where I can) that could happen while typing english if I accidentally hold down a key on the home row too long
 

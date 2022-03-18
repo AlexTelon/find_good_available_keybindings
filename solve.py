@@ -46,7 +46,9 @@ if __name__ == '__main__':
     counter = Counter(c_pairs)
 
     # not a true homerow, but these are the dual function keys I have and care about right now.
-    home_row = 'sdfjkl'
+    # home_row = 'sdfjkl'
+    # Actually s and l are my shift dual keys and I am not interested in shift-x combinations since those are used to write CAPITAL letters.
+    home_row = 'dfjk'
     home_row_left, home_row_right = 'sdf', 'jkl'
 
     left_side_letters =  'qwertasdfgzxcvb'
@@ -87,8 +89,6 @@ if __name__ == '__main__':
         The transformation format is important since its used to match a vscode export.
         """
         translate_table = {
-            's': 'shift',
-            'l': 'shift',
             'd': 'alt',
             'k': 'alt',
             'f': 'ctrl',

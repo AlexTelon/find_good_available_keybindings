@@ -107,9 +107,9 @@ if __name__ == '__main__':
 # Now I found that alt+f is not used. It matches perfectly to a jump-to-char command due to its similarity to ctrl+f.
 # It says its used 191 times though, it would be fun to see in which words 'kf are used and if any of them are common.
 
-for word in load_words():
-    if 'kf' in word:
-        print(word)
+# for word in load_words():
+#     if 'kf' in word:
+#         print(word)
 # many "double-words" like: backfired, thankfully, backflash, clockface, riskful and breakfast
 # and then a name i might use sometime: stockfish.
 # all in all it looks promising! If I have a 0.5% chance to misstype and do the command while i wanted to type

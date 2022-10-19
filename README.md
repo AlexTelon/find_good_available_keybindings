@@ -5,7 +5,7 @@ My goal is to then narrow down which one on the home row are least likely so tha
 If I hold down:
 
     F or J -> Ctrl
-    D or J -> Alt
+    D or K -> Alt
     S or L -> Shift
 
 While if I just tap the key the normal letter appears.
